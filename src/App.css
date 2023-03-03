@@ -1,0 +1,8 @@
+.main {
+    background: rgba(135, 206, 235, 0.5);
+    min-height: 100vh;
+    background-size: cover;
+    font-family: "Open Sans", serif;
+    display: flex;
+    flex-direction: column;
+}
