@@ -1,0 +1,37 @@
+.block {
+    width: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.container {
+    background-color: white;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.1);
+    border-radius: 2px;
+    display: flex;
+}
+
+.btn {
+    border: none;
+    background-color: transparent;
+    padding: 10px;
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+    border: none;
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.1);
+}
+
+.btn:first-child {
+    border-left: none;
+}
+
+.btn:last-child {
+    border-right: none;
+}
