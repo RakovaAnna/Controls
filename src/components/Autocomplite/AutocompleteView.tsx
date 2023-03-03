@@ -14,17 +14,18 @@ export const AutocompleteView = observer(({viewModel}: AutocompleteViewProps) =>
         if (viewModel.showOptions && viewModel.userInput) {
             if (collectionOptions.length === 0) {
                 return (
-                    <ul>
+                    <ul className="drop_list">
                         <li className="no-options">Записи не найдены</li>
                     </ul>
                 )
             } else {
                 return (
-                    <ul className="options">
+                    <ul className="drop_list options">
                         {collectionOptions.map((value, index) => {
                             return (
                                 <li key={index} onClick={viewModel.onClick.bind(viewModel, value)}>
-                                    <img src={value.flag} alt="Флаг"/> {value.name}, {value.fullName}
+                                    <img src={value.flag} className={'img_flag img_li'}
+                                         alt="Флаг"/> {value.name}, {value.fullName}
                                 </li>
                             );
                         })}
@@ -38,12 +39,13 @@ export const AutocompleteView = observer(({viewModel}: AutocompleteViewProps) =>
 
     return (
         <React.Fragment>
-            <div className='wrap'>
+            <div className='autocomplete_main'>
                 <div className="search">
-                    {viewModel.value && <img src={viewModel.value.flag} className='img-flag' alt='Флаг'/>}
+                    {viewModel.curValue &&
+                        <img src={viewModel.curValue.flag} className='img_flag img_input' alt='Флаг'/>}
                     <input
                         type="text"
-                        className={viewModel.value ? "search-box with-img" : "search-box"}
+                        className={viewModel.curValue ? "search-box with-img" : "search-box"}
                         onChange={viewModel.onChange.bind(viewModel)}
                         value={viewModel.userInput}
                     />

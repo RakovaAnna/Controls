@@ -11,11 +11,11 @@ function TaskFirst() {
     };
     const exampleSecond = {
         leftButtons: [
-            {text: 'В Alert', func: (value: any) => alert(value)},
+            {text: 'Вызвать в Alert', func: (value: any) => alert(value)},
         ],
         rightButtons: [
             {
-                text: 'Число ли',
+                text: 'Проверка на число',
                 func: (value: string | number) => {
                     if (!isNaN(parseFloat(value as string)) && isFinite(value as number)) {
                         alert(value)
