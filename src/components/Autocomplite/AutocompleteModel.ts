@@ -12,7 +12,10 @@ export class AutocompleteModel {
     options: CountryInfo[] = [];
     showOptions = false;
     userInput = '';
-    maxOptions: number | undefined = undefined;
+
+    private readonly maxOptions: number | undefined = undefined;
+    private lastRequestId = -1;
+    private activeTimeout: NodeJS.Timeout | null = null;
     private getOptions: (value: string) => Promise<CountryInfo[]>;
 
     constructor(props: AutocompleteProps) {
@@ -21,29 +24,55 @@ export class AutocompleteModel {
         this.maxOptions = props.maxOptions;
     }
 
-    // Обновление в рамках action
+    /*
+        Обновление в рамках action
+     */
     refreshOptions = (newOptions: CountryInfo[]) => {
         this.options = newOptions;
     }
 
-    onChange = (e: { currentTarget: { value: any; }; }) => {
-        const userInput = e.currentTarget.value;
-        this.curValue = undefined;
-        this.getOptions(userInput).then((result) => {
+    /*
+        После получения ответа сравниваем актуальный и текущий номера запросов,
+        если не совпадают, options не перезаписываем
+    */
+    requestOptions = (requestId: number) => {
+        this.getOptions(this.userInput).then((result) => {
             const uniqueResult = uniqueArray(result);
-            if (result.length !== 0) {
-                if (this.maxOptions !== undefined && uniqueResult.length > this.maxOptions) {
-                    this.refreshOptions(uniqueResult.slice(0, this.maxOptions));
-                } else  {
-                    this.refreshOptions(uniqueResult);
+            if (requestId === this.lastRequestId) {
+                if (result.length !== 0) {
+                    if (this.maxOptions !== undefined && uniqueResult.length > this.maxOptions) {
+                        this.refreshOptions(uniqueResult.slice(0, this.maxOptions));
+                    } else  {
+                        this.refreshOptions(uniqueResult);
+                    }
+                } else {
+                    this.refreshOptions([]);
                 }
-            } else {
-                this.refreshOptions([]);
             }
-
         })
+    }
+
+    /*
+        Каждому запросу присваеваем свой номер по порядку
+        и передаем этот номер в запрос.
+    */
+    callbackTimeout = () => {
+        this.lastRequestId += 1;
+        this.requestOptions(this.lastRequestId);
+        this.activeTimeout = null;
+    }
+
+    /*
+        При изменении ввода запускаем таймер на 1с,
+        чтобы объединить несколько изменений в один запрос
+    */
+    onChange = (e: { currentTarget: { value: any; }; }) => {
+        this.userInput = e.currentTarget.value;
+        this.curValue = undefined;
         this.showOptions = true;
-        this.userInput = userInput;
+        if (this.activeTimeout === null) {
+            this.activeTimeout = setTimeout(this.callbackTimeout, 1000);
+        }
     };
 
     onClick = (curVal: CountryInfo) => {
