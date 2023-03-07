@@ -1,17 +1,16 @@
 import {makeAutoObservable} from "mobx";
 import {CountryInfo} from "../../api/apiService";
 import {uniqueArray} from "../utilits";
-
-export type AutocompleteProps = {
-    maxOptions?: number;
-    getOptions: (value: string) => Promise<CountryInfo[]>;
-};
+import {AutocompleteProps, InputProps} from "../interfaces";
 
 export class AutocompleteModel {
     curValue: CountryInfo | undefined = undefined;
     options: CountryInfo[] = [];
     showOptions = false;
     userInput = '';
+    className?: string = '';
+    disabled?: boolean;
+    inputProps?: InputProps = undefined;
 
     private readonly maxOptions: number | undefined = undefined;
     private lastRequestId = -1;
@@ -20,8 +19,19 @@ export class AutocompleteModel {
 
     constructor(props: AutocompleteProps) {
         makeAutoObservable(this);
+        if (props.defaultValue) {
+            this.setNewCurrentValue(props.defaultValue);
+        }
+        this.className = props.className || '';
+        this.inputProps = props.inputProps;
         this.getOptions = props.getOptions;
         this.maxOptions = props.maxOptions;
+        this.disabled = props.disabled || false;
+    }
+
+    setNewCurrentValue = (newValue: CountryInfo) => {
+        this.curValue = newValue;
+        this.userInput = `${newValue.name}, ${newValue.fullName}`;
     }
 
     /*
@@ -76,9 +86,8 @@ export class AutocompleteModel {
     };
 
     onClick = (curVal: CountryInfo) => {
-        this.curValue = curVal;
+        this.setNewCurrentValue(curVal);
         this.options = [];
         this.showOptions = false;
-        this.userInput = `${curVal.name}, ${curVal.fullName}`;
     };
 }

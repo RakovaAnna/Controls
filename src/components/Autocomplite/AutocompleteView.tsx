@@ -24,7 +24,7 @@ export const AutocompleteView = observer(({viewModel}: AutocompleteViewProps) =>
                         {collectionOptions.map((value, index) => {
                             return (
                                 <li key={index} onClick={viewModel.onClick.bind(viewModel, value)}>
-                                    <img src={value.flag} className={'img_flag img_li'}
+                                    <img src={value.flag} className='img_flag img_li'
                                          alt="Флаг"/> {value.name}, {value.fullName}
                                 </li>
                             );
@@ -39,15 +39,17 @@ export const AutocompleteView = observer(({viewModel}: AutocompleteViewProps) =>
 
     return (
         <React.Fragment>
-            <div className='autocomplete_main'>
+            <div className={`autocomplete_main ${viewModel.className}`}>
                 <div className="search">
                     {viewModel.curValue &&
                         <img src={viewModel.curValue.flag} className='img_flag img_input' alt='Флаг'/>}
                     <input
                         type="text"
-                        className={viewModel.curValue ? "search-box with-img" : "search-box"}
                         onChange={viewModel.onChange.bind(viewModel)}
                         value={viewModel.userInput}
+                        {...viewModel.inputProps}
+                        disabled={viewModel.disabled}
+                        className={`search-box ${viewModel?.inputProps?.className || ''}`}
                     />
                 </div>
                 {getCollectionOptions(viewModel.options)}

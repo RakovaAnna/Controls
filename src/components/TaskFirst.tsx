@@ -5,7 +5,7 @@ import './Components.style.css';
 function TaskFirst() {
     const exampleFirst = {
         rightButtons: [
-            {text: 'Очистить', func: () => ''},
+            {text: 'Очистить', func: () => '', className: 'custom_button', disabled: true},
             {text: 'Поменять', func: () => 'Hello world'},
         ]
     };
@@ -28,9 +28,9 @@ function TaskFirst() {
     return (
         <div className='block'>
             <h1>Контрол с кнопками</h1>
-            <ControlWithButtons {...exampleFirst}/>
+            <ControlWithButtons {...exampleFirst} />
             <br/>
-            <ControlWithButtons {...exampleSecond}/>
+            <ControlWithButtons {...exampleSecond} inputProps={{className: 'custom_input'}}/>
         </div>
     )
 }

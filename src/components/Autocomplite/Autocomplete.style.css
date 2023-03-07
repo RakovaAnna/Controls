@@ -47,13 +47,14 @@
 }
 
 .img_flag {
+    border: 1px solid black;
     max-height:1.5em;
     max-width:2em;
 }
 
 .img_input {
     display: block;
-    position: relative;
+    position: absolute;
     left: 10px;
     top: 5px;
 }

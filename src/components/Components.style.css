@@ -35,3 +35,12 @@
 .btn:last-child {
     border-right: none;
 }
+
+.custom_input {
+    background-color: lightskyblue;
+}
+
+.custom_button {
+    background-color: lightskyblue;
+    border: none;
+}

@@ -7,7 +7,10 @@ interface ButtonViewProps {
 }
 
 export const ButtonView = ({viewModel}: ButtonViewProps) => (
-    <button className='btn' onClick={viewModel.onClick.bind(viewModel)}>
+    <button className={`btn ${viewModel.className}`}
+            onClick={viewModel.onClick.bind(viewModel)}
+            disabled={viewModel.disabled}
+    >
         {viewModel.text}
     </button>
 );
